@@ -178,10 +178,27 @@ a {
 }
 
 .citation-ref {
-  font-size: 0.8em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.15rem;
+  padding: 0 0.32rem;
+  margin-left: 0.22rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.68rem;
+  line-height: 1;
+  font-weight: 500;
   color: var(--muted);
-  vertical-align: super;
+  vertical-align: text-top;
   text-decoration: none;
+}
+
+.citation-ref:hover {
+  color: var(--text);
+  border-color: var(--muted);
 }
 
 .citation-item {
@@ -190,10 +207,17 @@ a {
   padding: 0.75rem 0;
   font-size: 0.85rem;
   color: var(--text);
+  scroll-margin-top: 1rem;
 }
 
 .citation-item:last-child {
   border-bottom: none;
+}
+
+.citation-item:target {
+  background: color-mix(in oklab, var(--surface) 80%, var(--accent) 20%);
+  border-radius: 10px;
+  padding: 0.75rem;
 }
 
 .citation-item a {

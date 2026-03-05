@@ -65,8 +65,25 @@ function renderMarkdownish(text) {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#39;");
 
+  const renderCitationGroup = (idsText) => {
+    const ids = [...new Set(
+      idsText
+        .split(",")
+        .map((id) => id.trim())
+        .filter((id) => /^\d+$/.test(id)),
+    )];
+
+    return ids
+      .map(
+        (id) =>
+          `<a class="citation-ref" href="#citation-${id}" aria-label="Jump to citation ${id}">[${id}]</a>`,
+      )
+      .join("");
+  };
+
   const renderInline = (line) => {
     let html = escapeHtml(line);
+    html = html.replace(/\s+([,.;:!?])/g, "$1");
     html = html.replace(
       /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
       '<a href="$2" target="_blank" rel="noreferrer">$1</a>',
@@ -75,14 +92,7 @@ function renderMarkdownish(text) {
     html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
     html = html.replace(/_(?!_)([^_]+)_(?!_)/g, "<em>$1</em>");
     html = html.replace(/\*(?!\*)([^*]+)\*(?!\*)/g, "<em>$1</em>");
-    html = html.replace(/\[(\d+(?:\s*,\s*\d+)*)\]/g, (_, idsText) =>
-      idsText
-        .split(",")
-        .map((id) => id.trim())
-        .filter(Boolean)
-        .map((id) => `<sup class="citation-ref">[${id}]</sup>`)
-        .join(""),
-    );
+    html = html.replace(/\[(\d+(?:\s*,\s*\d+)*)\]/g, (_, idsText) => renderCitationGroup(idsText));
     return html;
   };
 
@@ -160,6 +170,7 @@ function renderCitations(citations) {
   citations.forEach((citation) => {
     const item = document.createElement("li");
     item.className = "citation-item";
+    item.id = `citation-${citation.id}`;
 
     item.innerHTML = `
       <div class="flex items-center gap-2 mb-1">
