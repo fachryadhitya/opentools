@@ -63,7 +63,7 @@ a {
   background: var(--surface);
   color: var(--text);
   padding: 1rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.5;
   outline: none;
   transition: border-color 200ms ease, box-shadow 200ms ease;
